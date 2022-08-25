@@ -1,83 +1,33 @@
-package projectEuler;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
-public class TriangleContainment {
-	//problem 102
-	public static double distForm(double x1, double y1, double x2, double y2) {
-		return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
-	}
-
-	/**
-	 * 
-	 * @param px
-	 *            x value of the vertex
-	 * @param py
-	 *            y value of the vertex
-	 * @return the angle between point a, b, and p. Angle p is the vertex
-	 */
-	public static double findAngle(double ax, double ay, double px, double py, double cx, double cy) {
-		double pc = distForm(px, py, cx, cy); // side pc
-		double pa = distForm(px, py, ax, ay); // side pa
-		double ac = distForm(ax, ay, cx, cy); // side ac
-		double numerator = pc * pc + pa * pa - (ac * ac);
-		double denomonator = 2 * pa * pc;
-
-		return Math.acos(numerator / denomonator);
-	}
-
-	/**
-	 * finds the sum between angles APB, APC, and BPC
-	 * 
-	 * @param ax
-	 *            Vertex A coordinate
-	 * @param bx
-	 *            Vertex B coordinate
-	 * @param cx
-	 *            Vertex C coordinate
-	 * @param px
-	 *            Point P coordinate
-	 * @return the sum of the angles from p to each coordinate.
-	 */
-	public static double findAngleSum(double ax, double ay, double bx, double by, double cx, double cy, double px,
-			double py) {
-		double apb = findAngle(ax, ay, px, py, bx, by);
-		double apc = findAngle(ax, ay, px, py, cx, cy);
-		double bpc = findAngle(bx, by, px, py, cx, cy);
-		return apb + apc + bpc;
-	}
-
-	public static void main(String[] args) throws FileNotFoundException {
-	
-		Scanner input = new Scanner(new File("p102_triangles.txt"));
-		String in;
-		int contains = 0;
-		int total = 0;
-		while (input.hasNext()) {
-			in = input.next();
-			if (in.contains(",")) {
-				++total;
-				double ax = Double.valueOf(in.substring(0, in.indexOf(',')));
-				in = in.substring(in.indexOf(',') + 1);
-				double ay = Double.valueOf(in.substring(0, in.indexOf(',')));
-				in = in.substring(in.indexOf(',') + 1);
-				double bx = Double.valueOf(in.substring(0, in.indexOf(',')));
-				in = in.substring(in.indexOf(',') + 1);
-				double by = Double.valueOf(in.substring(0, in.indexOf(',')));
-				in = in.substring(in.indexOf(',') + 1);
-				double cx = Double.valueOf(in.substring(0, in.indexOf(',')));
-				in = in.substring(in.indexOf(',') + 1);
-				double cy = Double.valueOf(in);
-				
-				
-				double sum = findAngleSum(ax, ay, bx, by, cx, cy, 0.0, 0.0);
-				if (sum < 2*Math.PI+.0001 && sum > 2*Math.PI - .0001)
-					++contains;
-			}
-		}
-		
-		System.out.println(contains + " out of " + total + " triangles contain the origin.");
-	}
+#include <cstdlib>
+#include <iostream>
+#include <math.h>
+using namespace std;
+  
+int main()
+{
+    //create random number
+    double num[6];
+    for( int i=0 ; i<6 ; i++ )
+    {
+        int a = rand()%2;
+        if(a==0) num[i]=rand()%1001;
+        else num[i]=-1*rand()%1001;
+        cout<<num[i]<<'\n';
+    }
+    
+    //using determinant
+    double A=num[2]-num[0];
+    double B=num[3]-num[1];
+    double C=num[4]-num[0];
+    double D=num[5]-num[1];
+    
+    //calculating area
+    double area=abs(A*D-B*C)/2;
+    
+    //determine whether it's a triangle or not
+    if(area!=0) cout<<"yes "<<area;
+    else cout<<"no";
+    
+    return 0;
 }
+
